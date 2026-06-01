@@ -10,12 +10,18 @@ import java.util.List;
 
 public interface OrderHistoryRepository extends JpaRepository<Order, Long> {
 
-    @Query("SELECT DISTINCT o FROM Order o JOIN FETCH o.user JOIN FETCH o.items i JOIN FETCH i.picture WHERE " +
-            "(:email IS NULL OR o.user.email LIKE %:email%) AND " +
-            "(:from IS NULL OR o.createdAt >= :from) AND " +
-            "(:to IS NULL OR o.createdAt <= :to) " +
-            "ORDER BY o.createdAt DESC")
-    List<Order> findWithFilters(@Param("email") String email,
-                                @Param("from") LocalDateTime from,
+    @Query("SELECT o FROM Order o JOIN FETCH o.user ORDER BY o.createdAt DESC")
+    List<Order> findAllOrders();
+
+    @Query("SELECT o FROM Order o JOIN FETCH o.user WHERE o.user.email LIKE %:email% ORDER BY o.createdAt DESC")
+    List<Order> findByEmail(@Param("email") String email);
+
+    @Query("SELECT o FROM Order o JOIN FETCH o.user WHERE o.createdAt >= :from AND o.createdAt <= :to ORDER BY o.createdAt DESC")
+    List<Order> findByDateRange(@Param("from") LocalDateTime from,
                                 @Param("to") LocalDateTime to);
+
+    @Query("SELECT o FROM Order o JOIN FETCH o.user WHERE o.user.email LIKE %:email% AND o.createdAt >= :from AND o.createdAt <= :to ORDER BY o.createdAt DESC")
+    List<Order> findByEmailAndDateRange(@Param("email") String email,
+                                        @Param("from") LocalDateTime from,
+                                        @Param("to") LocalDateTime to);
 }

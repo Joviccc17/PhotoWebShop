@@ -111,10 +111,22 @@ public class OrderService {
     public List<Order> getOrdersWithFilters(String email,
                                             LocalDate dateFrom,
                                             LocalDate dateTo) {
-        LocalDateTime from = dateFrom != null ? dateFrom.atStartOfDay() : null;
-        LocalDateTime to = dateTo != null ? dateTo.atTime(23, 59, 59) : null;
-        String emailFilter = (email != null && !email.isBlank()) ? email : null;
-        return orderHistoryRepository.findWithFilters(emailFilter, from, to);
+        boolean hasEmail = email != null && !email.isBlank();
+        boolean hasFrom = dateFrom != null;
+        boolean hasTo = dateTo != null;
+
+        LocalDateTime from = hasFrom ? dateFrom.atStartOfDay() : null;
+        LocalDateTime to = hasTo ? dateTo.atTime(23, 59, 59) : null;
+
+        if (hasEmail && hasFrom && hasTo) {
+            return orderHistoryRepository.findByEmailAndDateRange(email, from, to);
+        } else if (hasEmail) {
+            return orderHistoryRepository.findByEmail(email);
+        } else if (hasFrom && hasTo) {
+            return orderHistoryRepository.findByDateRange(from, to);
+        } else {
+            return orderHistoryRepository.findAllOrders();
+        }
     }
 
     private Order buildOrder(User user, PaymentMethod paymentMethod) {
