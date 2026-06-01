@@ -12,7 +12,14 @@
         <a class="navbar-brand fw-bold" href="/" style="color:#F7F3F5;">PhotoStore</a>
         <div class="d-flex gap-2 align-items-center">
             <a href="/categories" class="ps-nav-btn">Categories</a>
-            <a href="/cart" class="ps-nav-btn">Cart</a>
+            <a href="/cart" class="ps-nav-btn">
+                Cart
+                <span th:if="${cartItemCount > 0}"
+                      th:text="${cartItemCount}"
+                      style="background:#c0392b;color:white;border-radius:50%;
+                 padding:1px 6px;font-size:0.75rem;margin-left:3px;">
+    </span>
+            </a>
             <span sec:authorize="!isAuthenticated()">
                 <a href="/login" class="ps-nav-btn">Login</a>
                 <a href="/register" class="ps-nav-btn">Register</a>

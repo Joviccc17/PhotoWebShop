@@ -12,7 +12,14 @@
         <a class="navbar-brand fw-bold" th:href="@{/}" style="color:#F7F3F5;">PhotoStore</a>
         <div class="d-flex gap-2 align-items-center">
             <a th:href="@{/pictures}" class="ps-nav-btn">Pictures</a>
-            <a th:href="@{/cart}" class="ps-nav-btn">Cart</a>
+            <a href="/cart" class="ps-nav-btn">
+                Cart
+                <span th:if="${cartItemCount > 0}"
+                      th:text="${cartItemCount}"
+                      style="background:#c0392b;color:white;border-radius:50%;
+                 padding:1px 6px;font-size:0.75rem;margin-left:3px;">
+    </span>
+            </a>
             <a th:href="@{/user/orders}" class="ps-nav-btn">My Orders</a>
             <form method="post" th:action="@{/logout}" class="d-inline">
                 <button type="submit" class="ps-nav-btn ps-nav-btn--logout">Logout</button>
