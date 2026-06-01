@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Admin - Picture Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/photostore.css}">
+</head>
+<body>
+<div class="ps-admin-wrap">
+
+    <div th:replace="~{admin/fragments/sidebar :: sidebar}"></div>
+
+    <main class="ps-admin-main">
+        <div class="ps-admin-topbar">
+            <h1 th:text="${pictureId != null} ? 'Edit Picture' : 'New Picture'">Picture Form</h1>
+            <a th:href="@{/admin/pictures}" class="btn btn-secondary btn-sm">&#8592; Back</a>
+        </div>
+
+        <div class="ps-admin-content">
+            <div class="card p-4" style="max-width: 720px;">
+                <form method="post" th:action="@{${actionUrl}}" th:object="${form}"
+                      enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-semibold">Title</label>
+                        <input type="text" id="title" th:field="*{title}" class="form-control">
+                        <div th:if="${#fields.hasErrors('title')}" class="text-danger"
+                             th:errors="*{title}">Error</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-semibold">Description</label>
+                        <textarea id="description" th:field="*{description}"
+                                  class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="price" class="form-label fw-semibold">Price (€)</label>
+                            <input type="number" id="price" th:field="*{price}"
+                                   class="form-control" step="0.01" min="0">
+                            <div th:if="${#fields.hasErrors('price')}" class="text-danger"
+                                 th:errors="*{price}">Error</div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="stockQuantity" class="form-label fw-semibold">Stock Quantity</label>
+                            <input type="number" id="stockQuantity" th:field="*{stockQuantity}"
+                                   class="form-control" min="0">
+                            <div th:if="${#fields.hasErrors('stockQuantity')}" class="text-danger"
+                                 th:errors="*{stockQuantity}">Error</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="categoryId" class="form-label fw-semibold">Category</label>
+                        <select id="categoryId" th:field="*{categoryId}" class="form-select">
+                            <option value="">-- Select Category --</option>
+                            <option th:each="cat : ${categories}"
+                                    th:value="${cat.id}"
+                                    th:text="${cat.name}">Category</option>
+                        </select>
+                        <div th:if="${#fields.hasErrors('categoryId')}" class="text-danger"
+                             th:errors="*{categoryId}">Error</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="imageSelection" class="form-label fw-semibold">Choose Existing Image</label>
+                        <div id="imageSelection" class="row g-2">
+                            <div class="col-3" th:each="image : ${images}">
+                                <div class="card h-100" style="cursor:pointer;">
+                                    <img th:src="@{'/images/' + ${image}}"
+                                         th:alt="${image}"
+                                         class="card-img-top"
+                                         style="height: 80px; object-fit: cover;">
+                                    <div class="card-body p-1 text-center">
+                                        <input type="radio" th:field="*{selectedImage}"
+                                               th:value="${image}" class="form-check-input">
+                                        <small th:text="${image}" class="d-block text-truncate"
+                                               style="font-size:0.7rem;"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="uploadedImage" class="form-label fw-semibold">Or Upload New Image</label>
+                        <input type="file" id="uploadedImage" name="uploadedImage"
+                               class="form-control" accept="image/*">
+                        <small class="text-muted">Uploaded image overrides the selection above.</small>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a th:href="@{/admin/pictures}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</div>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+    <title>PhotoStore — Premium Stock Photography</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/photostore.css}">
+    <style>
+        .ps-welcome-wrap {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .ps-welcome-image {
+            flex: 1;
+            background: url('/images/velebit-mountains.jpg') center center / cover no-repeat;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .ps-welcome-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                    to right,
+                    transparent 60%,
+                    rgba(64, 50, 52, 0.4) 100%
+            );
+        }
+
+        .ps-welcome-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 4rem 3.5rem;
+            background-color: var(--ps-light);
+        }
+
+        .ps-welcome-brand {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--ps-mid);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .ps-welcome-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--ps-dark);
+            line-height: 1.15;
+            margin-bottom: 1.25rem;
+        }
+
+        .ps-welcome-title span {
+            color: var(--ps-mid);
+        }
+
+        .ps-welcome-desc {
+            font-size: 1.1rem;
+            color: var(--ps-mid);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 480px;
+        }
+
+        .ps-welcome-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .ps-welcome-actions .btn-lg {
+            padding: 0.75rem 2rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .ps-welcome-features {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .ps-welcome-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            color: var(--ps-mid);
+            font-size: 0.9rem;
+        }
+
+        .ps-welcome-feature-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--ps-accent);
+            color: var(--ps-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 991px) {
+            .ps-welcome-wrap {
+                flex-direction: column;
+            }
+            .ps-welcome-image {
+                min-height: 40vh;
+                flex: none;
+            }
+            .ps-welcome-content {
+                padding: 2.5rem 1.5rem;
+            }
+            .ps-welcome-title {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="ps-welcome-wrap">
+
+    <div class="ps-welcome-image"></div>
+
+    <div class="ps-welcome-content">
+        <div class="ps-welcome-brand">PhotoStore</div>
+
+        <h1 class="ps-welcome-title">
+            Discover <span>Premium</span><br>
+            Stock Photography
+        </h1>
+
+        <p class="ps-welcome-desc">
+            Curated collections of professional photographs — from breathtaking
+            landscapes and urban architecture to wildlife portraits and studio work.
+            Find the perfect image for your next project.
+        </p>
+
+        <div class="ps-welcome-actions">
+            <a th:href="@{/pictures}" class="btn btn-primary btn-lg">Browse Collection</a>
+            <span sec:authorize="!isAuthenticated()">
+                <a th:href="@{/register}" class="btn btn-secondary btn-lg">Create Account</a>
+            </span>
+            <span sec:authorize="isAuthenticated()">
+                <a th:href="@{/user/orders}" class="btn btn-secondary btn-lg">My Orders</a>
+            </span>
+        </div>
+
+        <div class="ps-welcome-features">
+            <div class="ps-welcome-feature">
+                <div class="ps-welcome-feature-icon">&#10003;</div>
+                High-resolution downloads
+            </div>
+            <div class="ps-welcome-feature">
+                <div class="ps-welcome-feature-icon">&#10003;</div>
+                Secure PayPal checkout
+            </div>
+            <div class="ps-welcome-feature">
+                <div class="ps-welcome-feature-icon">&#10003;</div>
+                Curated categories
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>PhotoStore Admin</title>
+</head>
+<body>
+<nav th:fragment="sidebar" class="ps-sidebar">
+    <a th:href="@{/admin/dashboard}" class="ps-brand">
+        Photo<span>Store</span>
+        <div style="font-size:0.7rem;font-weight:400;opacity:0.6;margin-top:2px;">Admin Panel</div>
+    </a>
+
+    <ul class="ps-nav">
+        <li>
+            <a th:href="@{/admin/dashboard}"
+               th:classappend="${activePage == 'dashboard'} ? ' active'">
+                &#9741; Dashboard
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/categories}"
+               th:classappend="${activePage == 'categories'} ? ' active'">
+                &#9783; Categories
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/pictures}"
+               th:classappend="${activePage == 'pictures'} ? ' active'">
+                &#9998; Pictures
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/orders}"
+               th:classappend="${activePage == 'orders'} ? ' active'">
+                &#9783; Orders
+            </a>
+        </li>
+        <li>
+            <a th:href="@{/admin/login-history}"
+               th:classappend="${activePage == 'loginHistory'} ? ' active'">
+                &#9776; Login History
+            </a>
+        </li>
+    </ul>
+
+    <div class="ps-sidebar-footer">
+        <form method="post" th:action="@{/logout}">
+            <button type="submit">&#10006; Logout</button>
+        </form>
+    </div>
+</nav>
+</body>
+</html>
