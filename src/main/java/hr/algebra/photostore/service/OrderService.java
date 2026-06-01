@@ -78,6 +78,7 @@ public class OrderService {
         return savedOrder;
     }
 
+    @Transactional(readOnly = true)
     public List<Order> getOrdersByUser(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -85,10 +86,12 @@ public class OrderService {
         return orderRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
     }
 
+    @Transactional(readOnly = true)
     public List<Order> getAllOrders() {
         return orderRepository.findAllByOrderByCreatedAtDesc();
     }
 
+    @Transactional(readOnly = true)
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -97,11 +100,14 @@ public class OrderService {
 
     @Transactional
     public Order updateOrderStatus(Long id, OrderStatus status) {
-        Order order = getOrderById(id);
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Order not found: " + id));
         order.setStatus(status);
         return orderRepository.save(order);
     }
 
+    @Transactional(readOnly = true)
     public List<Order> getOrdersWithFilters(String email,
                                             LocalDate dateFrom,
                                             LocalDate dateTo) {

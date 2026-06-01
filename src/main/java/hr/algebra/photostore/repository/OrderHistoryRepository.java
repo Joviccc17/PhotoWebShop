@@ -10,10 +10,7 @@ import java.util.List;
 
 public interface OrderHistoryRepository extends JpaRepository<Order, Long> {
 
-    List<Order> findByUserIdOrderByCreatedAtDesc(Long userId);
-    List<Order> findAllByOrderByCreatedAtDesc();
-
-    @Query("SELECT o FROM Order o WHERE " +
+    @Query("SELECT DISTINCT o FROM Order o JOIN FETCH o.user JOIN FETCH o.items i JOIN FETCH i.picture WHERE " +
             "(:email IS NULL OR o.user.email LIKE %:email%) AND " +
             "(:from IS NULL OR o.createdAt >= :from) AND " +
             "(:to IS NULL OR o.createdAt <= :to) " +
