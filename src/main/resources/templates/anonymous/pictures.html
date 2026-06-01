@@ -82,7 +82,8 @@
 </div>
 
 <script th:inline="javascript">
-    const categoryId = null;
+        const categoryId = /*[[${selectedCategory != null ? selectedCategory.id : null}]]*/ null;
+
 
     function loadPage(btn) {
         const page = parseInt(btn.getAttribute('data-page'));

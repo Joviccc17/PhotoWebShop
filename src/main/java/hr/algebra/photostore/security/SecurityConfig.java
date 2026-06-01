@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +51,7 @@ public class SecurityConfig {
                             .requestMatchers("/api/admin/**").hasRole("ADMIN")
                             .requestMatchers("/swagger-ui/**", "/api-docs/**",
                                     "/swagger-ui.html").permitAll()
+                            .requestMatchers(HttpMethod.GET, "/api/pictures/**").permitAll()
                             .anyRequest().authenticated()
                     )
                     .csrf(csrf -> csrf.disable())

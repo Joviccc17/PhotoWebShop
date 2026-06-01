@@ -2,7 +2,6 @@ package hr.algebra.photostore.anonymous.controller;
 
 import hr.algebra.photostore.dto.CategoryDto;
 import hr.algebra.photostore.dto.PictureDto;
-import hr.algebra.photostore.model.Picture;
 import hr.algebra.photostore.service.CategoryService;
 import hr.algebra.photostore.service.PictureService;
 import org.springframework.data.domain.Page;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import hr.algebra.photostore.model.Picture;
 
 @Controller
 @RequestMapping("/pictures")
@@ -36,14 +36,14 @@ public class AnonymousPictureController {
                 .stream().map(PictureDto::from).toList());
         model.addAttribute("totalPages", picturePage.getTotalPages());
         model.addAttribute("currentPage", page);
-        model.addAttribute("categoryId", categoryId);
+        model.addAttribute("categories", categoryService.getAllCategories()
+                .stream().map(CategoryDto::from).toList());
 
         if (categoryId != null) {
             model.addAttribute("selectedCategory",
                     CategoryDto.from(categoryService.getCategoryById(categoryId)));
         }
-        model.addAttribute("categories", categoryService.getAllCategories()
-                .stream().map(CategoryDto::from).toList());
+
         return "anonymous/pictures";
     }
 
