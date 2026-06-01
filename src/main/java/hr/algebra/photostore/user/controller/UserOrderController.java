@@ -9,6 +9,7 @@ import hr.algebra.photostore.exceptions.PayPalApprovalException;
 import hr.algebra.photostore.service.OrderService;
 import hr.algebra.photostore.service.PayPalService;
 import hr.algebra.photostore.service.ShoppingCart;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class UserOrderController {
 
     private static final String REDIRECT_CHECKOUT = "redirect:/user/checkout";
     private static final String ERROR             = "error";
+
+    @Value("${app.base-url}")
+    private String appBaseUrl;
 
     private final OrderService orderService;
     private final ShoppingCart shoppingCart;
@@ -122,8 +126,8 @@ public class UserOrderController {
                 total,
                 "EUR",
                 "PhotoStore Order",
-                "http://localhost:8080/user/checkout/paypal/cancel",
-                "http://localhost:8080/user/checkout/paypal/success"
+                appBaseUrl + "/user/checkout/paypal/cancel",
+                appBaseUrl + "/user/checkout/paypal/success"
         );
 
         for (Links link : payment.getLinks()) {
