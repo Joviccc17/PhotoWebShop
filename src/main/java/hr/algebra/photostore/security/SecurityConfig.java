@@ -5,6 +5,7 @@ import hr.algebra.photostore.filter.JwtAuthFilter;
 import hr.algebra.photostore.service.MyUserDetailsService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -57,6 +58,8 @@ public class SecurityConfig {
                     .csrf(csrf -> csrf.disable())
                     .sessionManagement(session ->
                             session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .requestCache(cache -> cache.disable())
+                    .securityContext(ctx -> ctx.requireExplicitSave(true))
                     .exceptionHandling(ex -> ex
                             .authenticationEntryPoint((req, res, authEx) -> {
                                 res.setContentType("application/json");
@@ -133,6 +136,13 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public FilterRegistrationBean<JwtAuthFilter> jwtFilterRegistration(JwtAuthFilter filter) {
+        FilterRegistrationBean<JwtAuthFilter> registration = new FilterRegistrationBean<>(filter);
+        registration.setEnabled(false);
+        return registration;
     }
 
     private void handleLoginSuccess(HttpServletRequest request,
