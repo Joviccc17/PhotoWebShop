@@ -50,8 +50,6 @@ public class SecurityConfig {
                     .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/api/auth/**").permitAll()
                             .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                            .requestMatchers("/swagger-ui/**", "/api-docs/**",
-                                    "/swagger-ui.html").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/pictures/**").permitAll()
                             .anyRequest().authenticated()
                     )
@@ -90,8 +88,6 @@ public class SecurityConfig {
                             .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                             .requestMatchers("/admin/**").hasRole("ADMIN")
                             .requestMatchers("/user/**").hasRole("USER")
-                            .requestMatchers("/swagger-ui/**", "/api-docs/**",
-                                    "/swagger-ui.html").permitAll()
                             .anyRequest().authenticated()
                     )
                     .formLogin(form -> form

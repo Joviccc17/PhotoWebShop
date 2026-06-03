@@ -22,9 +22,9 @@ public class PictureForm {
     @Min(value = 0, message = "Price must be positive")
     private BigDecimal price;
 
-    private String selectedImage;  // chosen from existing images
+    private String selectedImage;
 
-    private MultipartFile uploadedImage;  // new upload
+    private MultipartFile uploadedImage;
 
     @NotNull(message = "Stock quantity is required")
     @Min(value = 0, message = "Stock must be positive")
